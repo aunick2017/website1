@@ -1,0 +1,26 @@
+{% extends "base.html" %}
+
+
+
+
+{% block content %}
+<div class='col-sm-6 col-sm-offset-3'>
+    <img src='{{ instance.image.url }}' class='img-responsive' />
+<link rel='stylesheet' href='/static/css/base.css' />
+<h1> Person {{ instance.id_of_people }} </h1>
+
+
+
+{{ instance.title }}<br/>
+{{ instance.content }}<br/>
+{{ instance.timestamp }}<br/>
+{{ instance.print1 }}<br/>
+{{ instance.print2 }}<br/>
+{{ instance.print3 }}<br/>
+{{ instance.print4 }}<br/>
+{{ instance.print5 }}<br/>
+
+
+{% endblock content %}
+
+

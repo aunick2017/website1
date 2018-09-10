@@ -1,0 +1,21 @@
+<!--DOCTYPE html -->
+<html>
+
+<body>
+<link rel='stylesheet' href='/static/css/base.css' />
+<h1>{{ title }} is working!</h1>
+
+{{object_list}}
+
+{% for obj in object_list %}
+
+<!--<a href='/posts/{{ obj.id }}/'{{ obj.title }}<br/> -->
+{% url "posts:detail" id=obj.id %}
+<a href='{{ obj.get_absolute_url }}'>{{ obj.title }}</a><br/>
+{{ obj.content }}<br/>
+{{ obj.timestamp }}<br/>
+
+{% endfor %}
+</body>
+</html>
+ 
