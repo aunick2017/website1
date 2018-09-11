@@ -5,7 +5,7 @@
 
 {% block content %}
 <div class='col-sm-6 col-sm-offset-3'>
-    <img src='{{ instance.image.url }}' class='img-responsive' />
+    <img src='{{ instance.image.url }}' with="2000" height="400" class='img-responsive' />
 <link rel='stylesheet' href='/static/css/base.css' />
 <h1> Person {{ instance.id_of_people }} </h1>
 
@@ -20,6 +20,16 @@
 {{ instance.print4 }}<br/>
 {{ instance.print5 }}<br/>
 
+{{ instance.history_display1 }}<br/>
+{{ instance.history_display2 }}<br/>
+{{ instance.history_display3 }}<br/>
+{{ instance.history_display4 }}<br/>
+{{ instance.history_display5 }}<br/>
+{{ instance.history_display6 }}<br/>
+{{ instance.history_display7 }}<br/>
+{{ instance.history_display8 }}<br/>
+{{ instance.history_display9 }}<br/>
+{{ instance.history_display10 }}<br/>
 
 {% endblock content %}
 

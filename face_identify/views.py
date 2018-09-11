@@ -30,6 +30,9 @@ from scipy import ndimage
 import json
 
 from .models import List
+from .models import History
+
+import datetime
 
 
 # Create your views here.
@@ -66,9 +69,19 @@ def posts_create(request):
 		
 		people_in_this_photo = ''
 		print(List.objects.first())
+		#List.objects.all().delete()
 		if List.objects.first() is None:
+			
 			for encoding in unknown_face_encoding:
+				i = 1
 				unknown_face_encoding_lists.append(encoding.tolist())
+
+				save = History(person_number = i, Location = instance.Location, Date = instance.Date )
+				save.save()
+
+			
+
+
 			unknown_face_encoding_strings = json.dumps(unknown_face_encoding_lists)
 			known_face_encoding_stored = List(question_text = unknown_face_encoding_strings)
 			known_face_encoding_stored.save()
@@ -97,6 +110,59 @@ def posts_create(request):
 				if sum(face_distances < 0.45) > 0:
 					first_match_index = list(face_distances).index(min(face_distances)) + 1
 					print3 = "i have identified person {}, and i recognise them \n ".format(first_match_index)
+
+					save = History(person_number = first_match_index, Location = instance.Location, Date = instance.Date )
+					save.save()
+
+					i = 1
+
+					if i == 1:
+						i = 90000
+						try:
+							instance.history_display1 = str(History.objects.filter(person_number = str(first_match_index))[0].Date) + str(History.objects.filter(person_number = str(first_match_index))[0].Location)
+						except:
+							instance.history_display1 = ''
+						try:
+							instance.history_display2 = str(History.objects.filter(person_number = str(first_match_index))[1].Date) + str(History.objects.filter(person_number = str(first_match_index))[1].Location)
+						except:
+							instance.history_display2 = ''
+						try:
+							instance.history_display3 = str(History.objects.filter(person_number = str(first_match_index))[2].Date) + str(History.objects.filter(person_number = str(first_match_index))[2].Location)
+						except:
+							instance.history_display3 = ''
+						try:
+							instance.history_display4 = str(History.objects.filter(person_number = str(first_match_index))[3].Date) + str(History.objects.filter(person_number = str(first_match_index))[3].Location)
+						except:
+							instance.history_display4 = ''
+						try:
+							instance.history_display5 = str(History.objects.filter(person_number = str(first_match_index))[4].Date) + str(History.objects.filter(person_number = str(first_match_index))[4].Location)
+						except:
+							instance.history_display5 = ''
+						try:
+							instance.history_display6 = str(History.objects.filter(person_number = str(first_match_index))[5].Date) + str(History.objects.filter(person_number = str(first_match_index))[5].Location)
+						except:
+							instance.history_display6 = ''
+						try:
+							instance.history_display7 = str(History.objects.filter(person_number = str(first_match_index))[6].Date) + str(History.objects.filter(person_number = str(first_match_index))[6].Location)
+						except:
+							instance.history_display7 = ''
+						try:
+							instance.history_display8 = str(History.objects.filter(person_number = str(first_match_index))[7].Date) + str(History.objects.filter(person_number = str(first_match_index))[7].Location)
+						except:
+							instance.history_display8 = ''
+						try:
+							instance.history_display9 = str(History.objects.filter(person_number = str(first_match_index))[8].Date) + str(History.objects.filter(person_number = str(first_match_index))[8].Location)
+						except:
+							instance.history_display9 = ''
+						try:
+							instance.history_display10 = str(History.objects.filter(person_number = str(first_match_index))[9].Date) + str(History.objects.filter(person_number = str(first_match_index))[9].Location)
+						except:
+							instance.history_display10 = ''
+						
+
+
+
+
 					instance.print3 = print3
 
 					people_in_this_photo = people_in_this_photo + str(first_match_index) + ","
@@ -110,6 +176,12 @@ def posts_create(request):
 					print4 = "...added face {} to the database.".format(number)
 					print5 = "i don't recognise this person, let's identify them as {} \n ".format(len(known_faces_array))
 					
+					save = History(person_number = len(known_faces_array), Location = instance.Location, Date = instance.Date )
+					save.save()
+
+
+
+
 					instance.print4 = print4
 					instance.print5 = print5
 					
@@ -122,9 +194,12 @@ def posts_create(request):
 				#people = List_of_people.objects.add(person=face, appearances=form.location, dates=form.Date)
 
 			print(people_in_this_photo)
+			people_in_this_photo = people_in_this_photo[:-1]
 			instance.id_of_people = people_in_this_photo
 
 			instance.save()
+		
+
 			#List.objects.all().delete()
 
 			#for encoding in known_faces_array:

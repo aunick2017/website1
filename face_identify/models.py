@@ -25,6 +25,16 @@ class Post(models.Model):
 	print4 = models.CharField(max_length=120, default ='')
 	print5 = models.CharField(max_length=120, default ='')
 	id_of_people = models.CharField(max_length=120, default ='')
+	history_display1 = models.CharField(max_length=120, default ='')
+	history_display2 = models.CharField(max_length=120, default ='')
+	history_display3 = models.CharField(max_length=120, default ='')
+	history_display4 = models.CharField(max_length=120, default ='')
+	history_display5 = models.CharField(max_length=120, default ='')
+	history_display6 = models.CharField(max_length=120, default ='')
+	history_display7 = models.CharField(max_length=120, default ='')
+	history_display8 = models.CharField(max_length=120, default ='')
+	history_display9 = models.CharField(max_length=120, default ='')
+	history_display10 = models.CharField(max_length=120, default ='')
 
 
 	def __str__(self):
@@ -36,12 +46,27 @@ class Post(models.Model):
 import json
 
 class List(models.Model):
-	question_text = models.TextField(max_length=200)
-	location = models.TextField(max_length=200)
+	question_text = models.TextField(max_length=20000)
+	location = models.TextField(max_length=20000)
 	date = models.DateTimeField(null=True)
 
 	def __str__(self):
 		return self.question_text
+
+class History(models.Model):
+	person_number = models.TextField(max_length=20000)
+	Location = models.CharField(max_length=120)
+	Date = models.DateField(null=True)
+
+
+class History_display(models.Model):
+	print1 = models.CharField(max_length=120, default ='')
+	print2 = models.CharField(max_length=120, default ='')
+	print3 = models.CharField(max_length=120, default ='')
+	print4 = models.CharField(max_length=120, default ='')
+	print5 = models.CharField(max_length=120, default ='')
+	
+
 
 """
 Classes
