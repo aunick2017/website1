@@ -6,12 +6,18 @@ from django.db import models
 from django.urls import reverse
 import ast
 
+
+
+
+Location_choice = (('Hugo Boss','Hugo Boss'), ('Zara','Zara'),('Boost','Boost'), ('StarBucks','StarBucks'))
+
+
 def upload_location(instance, filename):
 	name = str(instance.timestamp)[:25] + ".jpg"
 	return name
 # Create your models here.
 class Post(models.Model):
-	Location = models.CharField(max_length=120)
+	Location = models.CharField(choices = Location_choice, max_length=120)
 	Date = models.DateField(null=True)
 	content = models.TextField()
 	updated = models.DateTimeField(auto_now=True, auto_now_add = False)
@@ -35,6 +41,29 @@ class Post(models.Model):
 	history_display8 = models.CharField(max_length=120, default ='')
 	history_display9 = models.CharField(max_length=120, default ='')
 	history_display10 = models.CharField(max_length=120, default ='')
+	history_display11 = models.CharField(max_length=120, default ='')
+	history_display12 = models.CharField(max_length=120, default ='')
+	history_display13 = models.CharField(max_length=120, default ='')
+	history_display14 = models.CharField(max_length=120, default ='')
+	history_display15 = models.CharField(max_length=120, default ='')
+	history_display16 = models.CharField(max_length=120, default ='')
+	history_display17 = models.CharField(max_length=120, default ='')
+	history_display18 = models.CharField(max_length=120, default ='')
+	history_display19 = models.CharField(max_length=120, default ='')
+	history_display20 = models.CharField(max_length=120, default ='')
+	history_display21 = models.CharField(max_length=120, default ='')
+	history_display22 = models.CharField(max_length=120, default ='')
+	history_display23 = models.CharField(max_length=120, default ='')
+	history_display24 = models.CharField(max_length=120, default ='')
+	history_display25 = models.CharField(max_length=120, default ='')
+	history_display26 = models.CharField(max_length=120, default ='')
+	history_display27 = models.CharField(max_length=120, default ='')
+	history_display28 = models.CharField(max_length=120, default ='')
+	history_display29 = models.CharField(max_length=120, default ='')
+	history_display30 = models.CharField(max_length=120, default ='')
+	show_print = models.CharField(max_length=120, default ='')
+	identified_person = models.CharField(max_length=120, default ='')
+	#Reset = models.BooleanField()
 
 
 	def __str__(self):
@@ -42,6 +71,18 @@ class Post(models.Model):
 	
 	def get_absolute_url(self):
 		return reverse("posts:detail", kwargs={"id": self.id})
+	
+	def get_absolute_coupon1(self):
+		return reverse("posts:detail", kwargs={"id": self.id})
+	
+	def get_absolute_coupon2(self):
+		return reverse("posts:coupon2", kwargs={"id": self.id})
+
+	def get_absolute_coupon3(self):
+		return reverse("posts:coupon3", kwargs={"id": self.id})
+
+	def get_absolute_coupon4(self):
+		return reverse("posts:coupon4", kwargs={"id": self.id})
 
 import json
 

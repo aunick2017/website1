@@ -34,12 +34,86 @@ from .models import History
 
 import datetime
 
+import itertools
+import operator
+
+def most_common(L):
+  # get an iterable of (item, iterable) pairs
+  SL = sorted((x, i) for i, x in enumerate(L))
+  # print 'SL:', SL
+  groups = itertools.groupby(SL, key=operator.itemgetter(0))
+  # auxiliary function to get "quality" for an item
+  def _auxfun(g):
+    item, iterable = g
+    count = 0
+    min_index = len(L)
+    for _, where in iterable:
+      count += 1
+      min_index = min(min_index, where)
+    # print 'item %r, count %r, minind %r' % (item, count, min_index)
+    return count, -min_index
+  # pick the highest-count/earliest item
+  return max(groups, key=_auxfun)[0]
 
 # Create your views here.
 
 def posts_home(request):
 
-   	return HttpResponse("<h1>Hello</h1>")
+
+
+	return render(request, "coupon1.html")
+
+   	#return HttpResponse("<h1>Hello</h1>")
+
+
+
+def coup1(request):
+
+   	return HttpResponse("<h1>c1</h1>")
+
+def coup2(request):
+
+   	return HttpResponse("<h1>c2</h1>")
+
+def coup3(request):
+
+   	return HttpResponse("<h1>c3</h1>")
+
+def coup4(request):
+
+   	return HttpResponse("<h1>c4</h1>")
+
+def coup5(request):
+
+   	return HttpResponse("<h1>c4</h1>")
+
+def coup6(request):
+
+   	return HttpResponse("<h1>c4</h1>")
+
+def coup7(request):
+
+   	return HttpResponse("<h1>c4</h1>")
+
+def coup8(request):
+
+   	return HttpResponse("<h1>c4</h1>")
+
+def coup9(request):
+
+   	return HttpResponse("<h1>c4</h1>")
+
+def coup10(request):
+
+   	return HttpResponse("<h1>c4</h1>")
+
+
+
+def reset(request):
+
+	List.objects.all().delete()
+	History.objects.all().delete()
+
 
 
 
@@ -50,9 +124,9 @@ def posts_create(request):
 		instance = form.save(commit=False)
 		instance.save()
 		messages.success(request, "Successfully Created")
-		print(instance)
-		print(str(instance.timestamp)[:25] + ".jpg")
-		print(str(instance.timestamp).replace(" ", "_")[:25] + ".jpg")
+		#print(instance)
+		#print(str(instance.timestamp)[:25] + ".jpg")
+		#print(str(instance.timestamp).replace(" ", "_")[:25] + ".jpg")
 		image_name = str(instance.timestamp).replace(" ", "_")[:25].replace(":","") + ".jpg"
 
 		image_path = os.path.join("C:/Users/LJC/media_cdn/", image_name)
@@ -70,6 +144,7 @@ def posts_create(request):
 		people_in_this_photo = ''
 		print(List.objects.first())
 		#List.objects.all().delete()
+		#History.objects.all().delete()
 		if List.objects.first() is None:
 			
 			for encoding in unknown_face_encoding:
@@ -78,6 +153,7 @@ def posts_create(request):
 
 				save = History(person_number = i, Location = instance.Location, Date = instance.Date )
 				save.save()
+				"hello1.1"
 
 			
 
@@ -95,7 +171,7 @@ def posts_create(request):
 			for encoding in known_faces_lists:
 				known_faces_array.append(np.array(encoding)) 
 				#print("length of known_faces:" + str(len(known_faces_array)))
-
+			print("length of known_faces_array:" + str(len(known_faces_array)))
 			for number,face in enumerate(unknown_face_encoding, start=1):
 				#this is just the compare function, I should make it so we can toggle the distance threshold
 				check_with_known_faces = face_recognition.compare_faces(known_faces_array, face) 
@@ -158,6 +234,93 @@ def posts_create(request):
 							instance.history_display10 = str(History.objects.filter(person_number = str(first_match_index))[9].Date) + str(History.objects.filter(person_number = str(first_match_index))[9].Location)
 						except:
 							instance.history_display10 = ''
+						try:
+							instance.history_display11 = str(History.objects.filter(person_number = str(first_match_index))[10].Date) + str(History.objects.filter(person_number = str(first_match_index))[10].Location)
+						except:
+							instance.history_display11 = ''
+						try:
+							instance.history_display12 = str(History.objects.filter(person_number = str(first_match_index))[11].Date) + str(History.objects.filter(person_number = str(first_match_index))[11].Location)
+						except:
+							instance.history_display12 = ''
+						try:
+							instance.history_display13 = str(History.objects.filter(person_number = str(first_match_index))[12].Date) + str(History.objects.filter(person_number = str(first_match_index))[12].Location)
+						except:
+							instance.history_display13 = ''
+						try:
+							instance.history_display14 = str(History.objects.filter(person_number = str(first_match_index))[13].Date) + str(History.objects.filter(person_number = str(first_match_index))[13].Location)
+						except:
+							instance.history_display14 = ''
+						try:
+							instance.history_display15 = str(History.objects.filter(person_number = str(first_match_index))[14].Date) + str(History.objects.filter(person_number = str(first_match_index))[14].Location)
+						except:
+							instance.history_display15 = ''
+						try:
+							instance.history_display16 = str(History.objects.filter(person_number = str(first_match_index))[15].Date) + str(History.objects.filter(person_number = str(first_match_index))[15].Location)
+						except:
+							instance.history_display16 = ''
+						try:
+							instance.history_display17 = str(History.objects.filter(person_number = str(first_match_index))[16].Date) + str(History.objects.filter(person_number = str(first_match_index))[16].Location)
+						except:
+							instance.history_display17 = ''
+						try:
+							instance.history_display18 = str(History.objects.filter(person_number = str(first_match_index))[17].Date) + str(History.objects.filter(person_number = str(first_match_index))[17].Location)
+						except:
+							instance.history_display18 = ''
+						try:
+							instance.history_display19 = str(History.objects.filter(person_number = str(first_match_index))[18].Date) + str(History.objects.filter(person_number = str(first_match_index))[18].Location)
+						except:
+							instance.history_display19 = ''
+						try:
+							instance.history_display20 = str(History.objects.filter(person_number = str(first_match_index))[19].Date) + str(History.objects.filter(person_number = str(first_match_index))[19].Location)
+						except:
+							instance.history_display20 = ''
+						try:
+							instance.history_display21 = str(History.objects.filter(person_number = str(first_match_index))[20].Date) + str(History.objects.filter(person_number = str(first_match_index))[20].Location)
+						except:
+							instance.history_display21 = ''
+						try:
+							instance.history_display22 = str(History.objects.filter(person_number = str(first_match_index))[21].Date) + str(History.objects.filter(person_number = str(first_match_index))[21].Location)
+						except:
+							instance.history_display22 = ''
+						try:
+							instance.history_display23 = str(History.objects.filter(person_number = str(first_match_index))[22].Date) + str(History.objects.filter(person_number = str(first_match_index))[22].Location)
+						except:
+							instance.history_display23 = ''
+						try:
+							instance.history_display24 = str(History.objects.filter(person_number = str(first_match_index))[23].Date) + str(History.objects.filter(person_number = str(first_match_index))[23].Location)
+						except:
+							instance.history_display24 = ''
+						try:
+							instance.history_display25 = str(History.objects.filter(person_number = str(first_match_index))[24].Date) + str(History.objects.filter(person_number = str(first_match_index))[24].Location)
+						except:
+							instance.history_display25 = ''
+						try:
+							instance.history_display26 = str(History.objects.filter(person_number = str(first_match_index))[25].Date) + str(History.objects.filter(person_number = str(first_match_index))[25].Location)
+						except:
+							instance.history_display26 = ''
+						try:
+							instance.history_display27 = str(History.objects.filter(person_number = str(first_match_index))[26].Date) + str(History.objects.filter(person_number = str(first_match_index))[26].Location)
+						except:
+							instance.history_display27 = ''
+						try:
+							instance.history_display28 = str(History.objects.filter(person_number = str(first_match_index))[27].Date) + str(History.objects.filter(person_number = str(first_match_index))[27].Location)
+						except:
+							instance.history_display28 = ''
+						try:
+							instance.history_display29 = str(History.objects.filter(person_number = str(first_match_index))[28].Date) + str(History.objects.filter(person_number = str(first_match_index))[28].Location)
+						except:
+							instance.history_display29 = ''
+						try:
+							instance.history_display30 = str(History.objects.filter(person_number = str(first_match_index))[29].Date) + str(History.objects.filter(person_number = str(first_match_index))[29].Location)
+						except:
+							instance.history_display30 = ''
+						
+						
+
+						instance.identified_person = str(first_match_index)
+
+
+
 						
 
 
@@ -200,18 +363,18 @@ def posts_create(request):
 			instance.save()
 		
 
-			#List.objects.all().delete()
+			List.objects.all().delete()
 
-			#for encoding in known_faces_array:
-			#	unknown_face_encoding_lists.append(encoding.tolist())
-			##print(len(unknown_face_encoding_lists))
-			#unknown_face_encoding_strings = json.dumps(unknown_face_encoding_lists)
-			#known_face_encoding_stored = List(
-			#	question_text = unknown_face_encoding_strings,
-			#	location = form.location,
-			#	date = form.date)
-			#known_face_encoding_stored.save()
-			#print(known_face_encoding_stored)
+			for encoding in known_faces_array:
+				unknown_face_encoding_lists.append(encoding.tolist())
+			#print(len(unknown_face_encoding_lists))
+			unknown_face_encoding_strings = json.dumps(unknown_face_encoding_lists)
+			known_face_encoding_stored = List(
+				question_text = unknown_face_encoding_strings)
+				#location = form.Location,
+				#date = form.Date)
+			known_face_encoding_stored.save()
+			print(known_face_encoding_stored)
 
 
 		#get list of known faces
@@ -232,6 +395,59 @@ def posts_create(request):
 		#json.dumps(unknown_face_encoding.tolist())
 
 		###
+
+		last_4_locations = []
+
+		for entry in History.objects.filter(person_number = instance.identified_person).order_by('-id')[:4]:
+			last_4_locations.append(entry.Location)
+
+		print(last_4_locations)
+
+
+		if History.objects.filter(person_number = instance.identified_person).order_by('-id')[:5].count() == 5 and len(set(last_4_locations)) != 5 and last_4_locations.count('StarBucks') == 1 and last_4_locations[0] == "StarBucks":
+			if most_common(last_4_locations) == 'Hugo Boss':
+
+				context = {
+					"form": form,
+					"instance": instance,
+				}
+
+
+
+				return render(request, "post_coupon1.html", context)
+
+		if History.objects.filter(person_number = instance.identified_person).order_by('-id')[:5].count() == 5 and len(set(last_4_locations)) != 5 and last_4_locations.count('StarBucks') == 1 and last_4_locations[0] == "StarBucks":
+			if most_common(last_4_locations) == 'Zara':
+
+				context = {
+					"form": form,
+					"instance": instance,
+				}
+
+
+
+				return render(request, "post_coupon2.html", context)
+
+		if History.objects.filter(person_number = instance.identified_person).order_by('-id')[:5].count() == 5 and len(set(last_4_locations)) != 5 and last_4_locations.count('StarBucks') == 1 and last_4_locations[0] == "StarBucks":
+			if most_common(last_4_locations) == 'Boost':
+
+				context = {
+					"form": form,
+					"instance": instance,
+				}
+
+
+
+				return render(request, "post_coupon3.html", context)
+
+
+
+
+
+		
+
+			
+
 
 
 		return HttpResponseRedirect(instance.get_absolute_url())
@@ -254,6 +470,56 @@ def posts_create(request):
 
 
 def posts_detail(request,id=None):
+	#instance = Post.objects.get(id=1 )
+	instance = get_object_or_404(Post,id=id)
+	context = {
+		"title": "Detail",
+		"instance": instance,
+	}
+	#return HttpResponse("<h1>Hello</h1>")
+	return render(request, "post_details.html", context)
+
+def posts_coupon1(request,id=None):
+	#instance = Post.objects.get(id=1 )
+	instance = get_object_or_404(Post,id=id)
+	context = {
+		"title": "Detail",
+		"instance": instance,
+	}
+	#return HttpResponse("<h1>Hello</h1>")
+	return render(request, "post_coupon1.html", context)
+
+def posts_coupon2(request,id=None):
+	#instance = Post.objects.get(id=1 )
+	instance = get_object_or_404(Post,id=id)
+	context = {
+		"title": "Detail",
+		"instance": instance,
+	}
+	#return HttpResponse("<h1>Hello</h1>")
+	return render(request, "post_coupon2.html", context)
+
+def posts_coupon3(request,id=None):
+	#instance = Post.objects.get(id=1 )
+	instance = get_object_or_404(Post,id=id)
+	context = {
+		"title": "Detail",
+		"instance": instance,
+	}
+	#return HttpResponse("<h1>Hello</h1>")
+	return render(request, "posts_coupon3.html", context)
+
+def posts_coupon4(request,id=None):
+	#instance = Post.objects.get(id=1 )
+	instance = get_object_or_404(Post,id=id)
+	context = {
+		"title": "Detail",
+		"instance": instance,
+	}
+	#return HttpResponse("<h1>Hello</h1>")
+	return render(request, "posts_coupon4.html", context)
+
+def posts_ticket(request,id=None):
 	#instance = Post.objects.get(id=1 )
 	instance = get_object_or_404(Post,id=id)
 	context = {
