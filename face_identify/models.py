@@ -17,7 +17,7 @@ def upload_location(instance, filename):
 	return name
 # Create your models here.
 class Post(models.Model):
-	Location = models.CharField(choices = Location_choice, max_length=120)
+	Location = models.CharField(choices = Location_choice, max_length=120, )
 	Date = models.DateField(null=True)
 	content = models.TextField()
 	updated = models.DateTimeField(auto_now=True, auto_now_add = False)
@@ -106,6 +106,9 @@ class History_display(models.Model):
 	print3 = models.CharField(max_length=120, default ='')
 	print4 = models.CharField(max_length=120, default ='')
 	print5 = models.CharField(max_length=120, default ='')
+
+
+
 	
 
 

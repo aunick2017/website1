@@ -21,12 +21,12 @@ import cv2
 from PIL import Image, ImageDraw
 import face_recognition
 import numpy as np
-import pandas as pd
+#import pandas as pd
 import os
-from scipy import ndimage
+#from scipy import ndimage
 from PIL import Image, ImageDraw
 import face_recognition
-from scipy import ndimage
+#from scipy import ndimage
 import json
 
 from .models import List
@@ -69,19 +69,19 @@ def posts_home(request):
 
 def coup1(request):
 
-   	return HttpResponse("<h1>c1</h1>")
+   	return render(request, "coupon1.html")
 
 def coup2(request):
 
-   	return HttpResponse("<h1>c2</h1>")
+   	return render(request, "coupon2.html")
 
 def coup3(request):
 
-   	return HttpResponse("<h1>c3</h1>")
+   	return render(request, "coupon3.html")
 
 def coup4(request):
 
-   	return HttpResponse("<h1>c4</h1>")
+   	return render(request, "coupon4.html")
 
 def coup5(request):
 
@@ -135,7 +135,7 @@ def posts_create(request):
 		unknown_face_encoding_lists = []
 		# faces = Faces(image_name)
 
-		print1 = "So there's {} faces here \n".format(len(unknown_face_encoding))
+		print1 = "Number of persons detected : {} \n".format(len(unknown_face_encoding))
 		print(print1)
 		instance.print1 = print1
 		instance.save()
@@ -172,6 +172,10 @@ def posts_create(request):
 				known_faces_array.append(np.array(encoding)) 
 				#print("length of known_faces:" + str(len(known_faces_array)))
 			print("length of known_faces_array:" + str(len(known_faces_array)))
+			
+
+			face_id_list =[]
+
 			for number,face in enumerate(unknown_face_encoding, start=1):
 				#this is just the compare function, I should make it so we can toggle the distance threshold
 				check_with_known_faces = face_recognition.compare_faces(known_faces_array, face) 
@@ -183,135 +187,139 @@ def posts_create(request):
 				instance.print2 = print2
 				print("hello2")
 
+				
+
 				if sum(face_distances < 0.45) > 0:
 					first_match_index = list(face_distances).index(min(face_distances)) + 1
-					print3 = "i have identified person {}, and i recognise them \n ".format(first_match_index)
+					print3 = "i have identified face {} as person {}, and i recognise them \n ".format(number,first_match_index)
 
 					save = History(person_number = first_match_index, Location = instance.Location, Date = instance.Date )
 					save.save()
+
+					face_id_list.append("ID " + str(first_match_index))
 
 					i = 1
 
 					if i == 1:
 						i = 90000
 						try:
-							instance.history_display1 = str(History.objects.filter(person_number = str(first_match_index))[0].Date) + str(History.objects.filter(person_number = str(first_match_index))[0].Location)
+							instance.history_display1 = str(History.objects.filter(person_number = str(first_match_index))[0].Date) + " " + str(History.objects.filter(person_number = str(first_match_index))[0].Location)
 						except:
 							instance.history_display1 = ''
 						try:
-							instance.history_display2 = str(History.objects.filter(person_number = str(first_match_index))[1].Date) + str(History.objects.filter(person_number = str(first_match_index))[1].Location)
+							instance.history_display2 = str(History.objects.filter(person_number = str(first_match_index))[1].Date) + " " + str(History.objects.filter(person_number = str(first_match_index))[1].Location)
 						except:
 							instance.history_display2 = ''
 						try:
-							instance.history_display3 = str(History.objects.filter(person_number = str(first_match_index))[2].Date) + str(History.objects.filter(person_number = str(first_match_index))[2].Location)
+							instance.history_display3 = str(History.objects.filter(person_number = str(first_match_index))[2].Date) + " " + str(History.objects.filter(person_number = str(first_match_index))[2].Location)
 						except:
 							instance.history_display3 = ''
 						try:
-							instance.history_display4 = str(History.objects.filter(person_number = str(first_match_index))[3].Date) + str(History.objects.filter(person_number = str(first_match_index))[3].Location)
+							instance.history_display4 = str(History.objects.filter(person_number = str(first_match_index))[3].Date) + " " + str(History.objects.filter(person_number = str(first_match_index))[3].Location)
 						except:
 							instance.history_display4 = ''
 						try:
-							instance.history_display5 = str(History.objects.filter(person_number = str(first_match_index))[4].Date) + str(History.objects.filter(person_number = str(first_match_index))[4].Location)
+							instance.history_display5 = str(History.objects.filter(person_number = str(first_match_index))[4].Date) + " " + str(History.objects.filter(person_number = str(first_match_index))[4].Location)
 						except:
 							instance.history_display5 = ''
 						try:
-							instance.history_display6 = str(History.objects.filter(person_number = str(first_match_index))[5].Date) + str(History.objects.filter(person_number = str(first_match_index))[5].Location)
+							instance.history_display6 = str(History.objects.filter(person_number = str(first_match_index))[5].Date) + " " + str(History.objects.filter(person_number = str(first_match_index))[5].Location)
 						except:
 							instance.history_display6 = ''
 						try:
-							instance.history_display7 = str(History.objects.filter(person_number = str(first_match_index))[6].Date) + str(History.objects.filter(person_number = str(first_match_index))[6].Location)
+							instance.history_display7 = str(History.objects.filter(person_number = str(first_match_index))[6].Date) + " " + str(History.objects.filter(person_number = str(first_match_index))[6].Location)
 						except:
 							instance.history_display7 = ''
 						try:
-							instance.history_display8 = str(History.objects.filter(person_number = str(first_match_index))[7].Date) + str(History.objects.filter(person_number = str(first_match_index))[7].Location)
+							instance.history_display8 = str(History.objects.filter(person_number = str(first_match_index))[7].Date) + " " + str(History.objects.filter(person_number = str(first_match_index))[7].Location)
 						except:
 							instance.history_display8 = ''
 						try:
-							instance.history_display9 = str(History.objects.filter(person_number = str(first_match_index))[8].Date) + str(History.objects.filter(person_number = str(first_match_index))[8].Location)
+							instance.history_display9 = str(History.objects.filter(person_number = str(first_match_index))[8].Date) + " " + str(History.objects.filter(person_number = str(first_match_index))[8].Location)
 						except:
 							instance.history_display9 = ''
 						try:
-							instance.history_display10 = str(History.objects.filter(person_number = str(first_match_index))[9].Date) + str(History.objects.filter(person_number = str(first_match_index))[9].Location)
+							instance.history_display10 = str(History.objects.filter(person_number = str(first_match_index))[9].Date) + " " + str(History.objects.filter(person_number = str(first_match_index))[9].Location)
 						except:
 							instance.history_display10 = ''
 						try:
-							instance.history_display11 = str(History.objects.filter(person_number = str(first_match_index))[10].Date) + str(History.objects.filter(person_number = str(first_match_index))[10].Location)
+							instance.history_display11 = str(History.objects.filter(person_number = str(first_match_index))[10].Date) + " " + str(History.objects.filter(person_number = str(first_match_index))[10].Location)
 						except:
 							instance.history_display11 = ''
 						try:
-							instance.history_display12 = str(History.objects.filter(person_number = str(first_match_index))[11].Date) + str(History.objects.filter(person_number = str(first_match_index))[11].Location)
+							instance.history_display12 = str(History.objects.filter(person_number = str(first_match_index))[11].Date) + " " + str(History.objects.filter(person_number = str(first_match_index))[11].Location)
 						except:
 							instance.history_display12 = ''
 						try:
-							instance.history_display13 = str(History.objects.filter(person_number = str(first_match_index))[12].Date) + str(History.objects.filter(person_number = str(first_match_index))[12].Location)
+							instance.history_display13 = str(History.objects.filter(person_number = str(first_match_index))[12].Date) + " " + str(History.objects.filter(person_number = str(first_match_index))[12].Location)
 						except:
 							instance.history_display13 = ''
 						try:
-							instance.history_display14 = str(History.objects.filter(person_number = str(first_match_index))[13].Date) + str(History.objects.filter(person_number = str(first_match_index))[13].Location)
+							instance.history_display14 = str(History.objects.filter(person_number = str(first_match_index))[13].Date) + " " + str(History.objects.filter(person_number = str(first_match_index))[13].Location)
 						except:
 							instance.history_display14 = ''
 						try:
-							instance.history_display15 = str(History.objects.filter(person_number = str(first_match_index))[14].Date) + str(History.objects.filter(person_number = str(first_match_index))[14].Location)
+							instance.history_display15 = str(History.objects.filter(person_number = str(first_match_index))[14].Date) + " " + str(History.objects.filter(person_number = str(first_match_index))[14].Location)
 						except:
 							instance.history_display15 = ''
 						try:
-							instance.history_display16 = str(History.objects.filter(person_number = str(first_match_index))[15].Date) + str(History.objects.filter(person_number = str(first_match_index))[15].Location)
+							instance.history_display16 = str(History.objects.filter(person_number = str(first_match_index))[15].Date) + " " + str(History.objects.filter(person_number = str(first_match_index))[15].Location)
 						except:
 							instance.history_display16 = ''
 						try:
-							instance.history_display17 = str(History.objects.filter(person_number = str(first_match_index))[16].Date) + str(History.objects.filter(person_number = str(first_match_index))[16].Location)
+							instance.history_display17 = str(History.objects.filter(person_number = str(first_match_index))[16].Date) + " " + str(History.objects.filter(person_number = str(first_match_index))[16].Location)
 						except:
 							instance.history_display17 = ''
 						try:
-							instance.history_display18 = str(History.objects.filter(person_number = str(first_match_index))[17].Date) + str(History.objects.filter(person_number = str(first_match_index))[17].Location)
+							instance.history_display18 = str(History.objects.filter(person_number = str(first_match_index))[17].Date) + " " + str(History.objects.filter(person_number = str(first_match_index))[17].Location)
 						except:
 							instance.history_display18 = ''
 						try:
-							instance.history_display19 = str(History.objects.filter(person_number = str(first_match_index))[18].Date) + str(History.objects.filter(person_number = str(first_match_index))[18].Location)
+							instance.history_display19 = str(History.objects.filter(person_number = str(first_match_index))[18].Date) + " " + str(History.objects.filter(person_number = str(first_match_index))[18].Location)
 						except:
 							instance.history_display19 = ''
 						try:
-							instance.history_display20 = str(History.objects.filter(person_number = str(first_match_index))[19].Date) + str(History.objects.filter(person_number = str(first_match_index))[19].Location)
+							instance.history_display20 = str(History.objects.filter(person_number = str(first_match_index))[19].Date) + " " + str(History.objects.filter(person_number = str(first_match_index))[19].Location)
 						except:
 							instance.history_display20 = ''
 						try:
-							instance.history_display21 = str(History.objects.filter(person_number = str(first_match_index))[20].Date) + str(History.objects.filter(person_number = str(first_match_index))[20].Location)
+							instance.history_display21 = str(History.objects.filter(person_number = str(first_match_index))[20].Date) + " " + str(History.objects.filter(person_number = str(first_match_index))[20].Location)
 						except:
 							instance.history_display21 = ''
 						try:
-							instance.history_display22 = str(History.objects.filter(person_number = str(first_match_index))[21].Date) + str(History.objects.filter(person_number = str(first_match_index))[21].Location)
+							instance.history_display22 = str(History.objects.filter(person_number = str(first_match_index))[21].Date) + " " + str(History.objects.filter(person_number = str(first_match_index))[21].Location)
 						except:
 							instance.history_display22 = ''
 						try:
-							instance.history_display23 = str(History.objects.filter(person_number = str(first_match_index))[22].Date) + str(History.objects.filter(person_number = str(first_match_index))[22].Location)
+							instance.history_display23 = str(History.objects.filter(person_number = str(first_match_index))[22].Date) + " " + str(History.objects.filter(person_number = str(first_match_index))[22].Location)
 						except:
 							instance.history_display23 = ''
 						try:
-							instance.history_display24 = str(History.objects.filter(person_number = str(first_match_index))[23].Date) + str(History.objects.filter(person_number = str(first_match_index))[23].Location)
+							instance.history_display24 = str(History.objects.filter(person_number = str(first_match_index))[23].Date) + " " + str(History.objects.filter(person_number = str(first_match_index))[23].Location)
 						except:
 							instance.history_display24 = ''
 						try:
-							instance.history_display25 = str(History.objects.filter(person_number = str(first_match_index))[24].Date) + str(History.objects.filter(person_number = str(first_match_index))[24].Location)
+							instance.history_display25 = str(History.objects.filter(person_number = str(first_match_index))[24].Date) + " " + str(History.objects.filter(person_number = str(first_match_index))[24].Location)
 						except:
 							instance.history_display25 = ''
 						try:
-							instance.history_display26 = str(History.objects.filter(person_number = str(first_match_index))[25].Date) + str(History.objects.filter(person_number = str(first_match_index))[25].Location)
+							instance.history_display26 = str(History.objects.filter(person_number = str(first_match_index))[25].Date) + " " + str(History.objects.filter(person_number = str(first_match_index))[25].Location)
 						except:
 							instance.history_display26 = ''
 						try:
-							instance.history_display27 = str(History.objects.filter(person_number = str(first_match_index))[26].Date) + str(History.objects.filter(person_number = str(first_match_index))[26].Location)
+							instance.history_display27 = str(History.objects.filter(person_number = str(first_match_index))[26].Date) + " " + str(History.objects.filter(person_number = str(first_match_index))[26].Location)
 						except:
 							instance.history_display27 = ''
 						try:
-							instance.history_display28 = str(History.objects.filter(person_number = str(first_match_index))[27].Date) + str(History.objects.filter(person_number = str(first_match_index))[27].Location)
+							instance.history_display28 = str(History.objects.filter(person_number = str(first_match_index))[27].Date) + " " + str(History.objects.filter(person_number = str(first_match_index))[27].Location)
 						except:
 							instance.history_display28 = ''
 						try:
-							instance.history_display29 = str(History.objects.filter(person_number = str(first_match_index))[28].Date) + str(History.objects.filter(person_number = str(first_match_index))[28].Location)
+							instance.history_display29 = str(History.objects.filter(person_number = str(first_match_index))[28].Date) + " " + str(History.objects.filter(person_number = str(first_match_index))[28].Location)
 						except:
 							instance.history_display29 = ''
 						try:
-							instance.history_display30 = str(History.objects.filter(person_number = str(first_match_index))[29].Date) + str(History.objects.filter(person_number = str(first_match_index))[29].Location)
+							instance.history_display30 = str(History.objects.filter(person_number = str(first_match_index))[29].Date) + " " + str(History.objects.filter(person_number = str(first_match_index))[29].Location)
 						except:
 							instance.history_display30 = ''
 						
@@ -342,6 +350,8 @@ def posts_create(request):
 					save = History(person_number = len(known_faces_array), Location = instance.Location, Date = instance.Date )
 					save.save()
 
+					face_id_list.append('new ID: ' + str(len(known_faces_array)))
+
 
 
 
@@ -355,6 +365,37 @@ def posts_create(request):
 
 
 				#people = List_of_people.objects.add(person=face, appearances=form.location, dates=form.Date)
+
+			print(face_id_list)
+			print('hello')
+			try:
+				instance.print1 = "Person 1: " + str(face_id_list[0])
+			except:
+				instance.print1 = ""
+
+			try:
+				instance.print2 = "Person 2: " + str(face_id_list[1])
+			except:
+				instance.print2 = ""
+
+			try:
+				instance.print3 = "Person 3: " + str(face_id_list[2])
+			except:
+				instance.print3 = ""
+
+			try:
+				instance.print4 = "Person 4: " + str(face_id_list[3])
+			except:
+				instance.print4 = ""
+
+			try:
+				instance.print5 = "Person 5: " + str(face_id_list[4])
+			except:
+				instance.print5 = ""
+
+
+
+
 
 			print(people_in_this_photo)
 			people_in_this_photo = people_in_this_photo[:-1]
@@ -398,48 +439,79 @@ def posts_create(request):
 
 		last_4_locations = []
 
-		for entry in History.objects.filter(person_number = instance.identified_person).order_by('-id')[:4]:
-			last_4_locations.append(entry.Location)
-
-		print(last_4_locations)
-
-
-		if History.objects.filter(person_number = instance.identified_person).order_by('-id')[:5].count() == 5 and len(set(last_4_locations)) != 5 and last_4_locations.count('StarBucks') == 1 and last_4_locations[0] == "StarBucks":
-			if most_common(last_4_locations) == 'Hugo Boss':
-
-				context = {
-					"form": form,
-					"instance": instance,
-				}
+		datetime_list = []
+		print(instance.identified_person)
+		print(History.objects.filter(person_number = instance.identified_person).order_by('-id')[:5])
 
 
-
-				return render(request, "post_coupon1.html", context)
-
-		if History.objects.filter(person_number = instance.identified_person).order_by('-id')[:5].count() == 5 and len(set(last_4_locations)) != 5 and last_4_locations.count('StarBucks') == 1 and last_4_locations[0] == "StarBucks":
-			if most_common(last_4_locations) == 'Zara':
-
-				context = {
-					"form": form,
-					"instance": instance,
-				}
+		if instance.identified_person != '':
+			for entry in History.objects.filter(person_number = instance.identified_person).order_by('-id')[:5]:
+				last_4_locations.append(entry.Location)
+				datetime_list.append(entry.Date)
+				print(entry.Location)
+				print(entry.Date)
+			print(last_4_locations)
+			print(datetime_list)
 
 
 
-				return render(request, "post_coupon2.html", context)
-
-		if History.objects.filter(person_number = instance.identified_person).order_by('-id')[:5].count() == 5 and len(set(last_4_locations)) != 5 and last_4_locations.count('StarBucks') == 1 and last_4_locations[0] == "StarBucks":
-			if most_common(last_4_locations) == 'Boost':
-
-				context = {
-					"form": form,
-					"instance": instance,
-				}
 
 
 
-				return render(request, "post_coupon3.html", context)
 
+		
+
+			most_recent_date = datetime_list[0]
+			print(datetime_list)
+			datetime_list = datetime_list[1:]
+			print(datetime_list)
+			difference = most_recent_date - max(datetime_list)
+			print(difference.days)
+			print(last_4_locations)
+
+
+
+		#now to get the 2nd,3rd,4th, and 5th last datetimes
+
+
+
+			if History.objects.filter(person_number = instance.identified_person).order_by('-id')[:5].count() == 5 and len(set(last_4_locations)) != 5 and last_4_locations.count('StarBucks') == 1 and last_4_locations[0] == "StarBucks" and difference.days > 30:
+				if most_common(last_4_locations) == 'Hugo Boss':
+
+					context = {
+						"form": form,
+						"instance": instance,
+					}
+
+
+
+					return render(request, "post_coupon1.html", context)
+
+				if most_common(last_4_locations) == 'Zara':
+
+					context = {
+						"form": form,
+						"instance": instance,
+					}
+
+
+
+					return render(request, "post_coupon2.html", context)
+
+				if most_common(last_4_locations) == 'Boost':
+
+					context = {
+						"form": form,
+						"instance": instance,
+					}
+
+
+
+					return render(request, "post_coupon3.html", context)
+
+
+
+		
 
 
 

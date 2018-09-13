@@ -6,11 +6,13 @@ class DateInput(forms.DateInput):
     input_type = 'date'
 
 class PostForm(forms.ModelForm):
+	
+
 	class Meta:
 		model = Post
 		fields = [
-            "Location",
             "image",
+            "Location",
             "Date",
             #"Reset",
 		] 

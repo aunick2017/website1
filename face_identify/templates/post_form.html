@@ -3,12 +3,58 @@
 
 {% block content %}
 
+<head> 
+	<link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/css/bootstrap.min.css" integrity="sha384-MCw98/SFnGE8fJT3GXwEOngsV7Zt27NXFoaoApmYm81iuXoPkFOJwJ8ERdknLPMO" crossorigin="anonymous">
+</head>
 
+
+<div class="container">
+  <div class="row">
+    <div class="col-sm">
+      Image
+    </div>
+    <div class="col-sm">
+      Location
+    </div>
+    <div class="col-sm">
+      Date
+    </div>
+  </div>
+</div>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<div class="container">
+  Form
+</div>
 <h1>Form</h1>
 
 <form method='POST' action='' enctype="multipart/form-data">{% csrf_token %}
 {{ form.as_p }}
-<input type='submit' value='Create Post'/>
+<input type='submit' value='Identify'/>
 </form>
 
 
