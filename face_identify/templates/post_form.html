@@ -7,26 +7,51 @@
 	<link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/css/bootstrap.min.css" integrity="sha384-MCw98/SFnGE8fJT3GXwEOngsV7Zt27NXFoaoApmYm81iuXoPkFOJwJ8ERdknLPMO" crossorigin="anonymous">
 </head>
 
-
-<div class="container">
-  <div class="row">
-    <div class="col-sm">
-      Image
-    </div>
-    <div class="col-sm">
-      Location
-    </div>
-    <div class="col-sm">
-      Date
-    </div>
-  </div>
-</div>
+<nav class="navbar navbar-light bg-light">
+  <a class="navbar-brand" href="#">
+    <img src="C:/Users/LJC/Website1/static/heyhey.jpg" width="30" height="30" alt="">
+  </a>
+</nav>
 
 
 
 
 
 
+<video id="player" controls autoplay></video> </br>
+<!--<button id="capture">Capture</button> -->
+
+<canvas id="canvas" width=320 height=240></canvas> </br>
+
+<a id="downloadLnk" download="hello.jpg">Capture</a>
+<script>
+  const player = document.getElementById('player');
+  const canvas = document.getElementById('canvas');
+  const context = canvas.getContext('2d');
+  const captureButton = document.getElementById('capture');
+  const downloadLnk = document.getElementById('downloadLnk');
+
+  const constraints = {
+    video: true,
+  };
+
+  downloadLnk.addEventListener('click', () => {
+    // Draw the video frame to the canvas.
+    context.drawImage(player, 0, 0, canvas.width, canvas.height);
+  });
+
+  // Attach the video stream to the video element and autoplay.
+  navigator.mediaDevices.getUserMedia(constraints)
+    .then((stream) => {
+      player.srcObject = stream;
+    });
+
+  function download() {
+    var dt = canvas.toDataURL('image/jpeg');
+    this.href = dt;
+   };
+  downloadLnk.addEventListener('click', download, false);
+</script>
 
 
 
@@ -47,7 +72,75 @@
 
 
 
-<div class="container">
+
+
+{% load widget_tweaks %}
+
+
+
+
+
+
+<form method='POST' action='' enctype="multipart/form-data">
+  {% csrf_token %}
+
+  {% for hidden_field in form.hidden_fields %}
+    {{ hidden_field }}
+  {% endfor %}
+
+
+
+	<div class="form-group">
+	{{ form.image.label_tag}}
+	{% render_field form.image class="form-control-file" %}
+	{% if form.image.help_text %}
+        <small class="form-text text-muted">{{ form.image.help_text }}</small>
+      {% endif %}
+	</div>
+
+		<div class="form-group">
+	{{ form.Location.label_tag}}
+	{% render_field form.Location class="form-control" %}
+
+	{% if form.Location.help_text %}
+        <small class="form-text text-muted">{{ form.Location.help_text }}</small>
+      {% endif %}
+	</div>
+
+		<div class="form-group">
+	{{ form.Date.label_tag}}
+	{% render_field form.Date class="form-control" %}
+	{% if form.Date.help_text %}
+        <small class="form-text text-muted">{{ form.Date.help_text }}</small>
+      {% endif %}
+	</div>
+
+		<div class="form-group">
+	{{ form.Reset.label_tag}}
+	{% render_field form.Reset class="form-control" %}
+	{% if form.Reset.help_text %}
+        <small class="form-text text-muted">{{ form.Reset.help_text }}</small>
+      {% endif %}
+	</div>
+
+
+
+
+
+  <button type="submit" class="btn btn-default">Submit</button>
+</form>
+
+
+
+
+
+
+
+
+
+
+
+<!--<div class="container">
   Form
 </div>
 <h1>Form</h1>
@@ -56,6 +149,7 @@
 {{ form.as_p }}
 <input type='submit' value='Identify'/>
 </form>
+
 
 
 

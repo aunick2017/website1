@@ -26,7 +26,7 @@ import os
 #from scipy import ndimage
 from PIL import Image, ImageDraw
 import face_recognition
-#from scipy import ndimage
+from scipy import ndimage
 import json
 
 from .models import List
@@ -36,6 +36,44 @@ import datetime
 
 import itertools
 import operator
+
+from django.contrib.auth.decorators import login_required
+
+
+
+from django.http import HttpResponse,StreamingHttpResponse
+import cv2
+import time
+
+import glob
+import os
+
+from mysite.settings import MEDIA_ROOT
+
+class VideoCamera(object):
+    def __init__(self):
+    	self.video = cv2.VideoCapture(0)
+    def __del__(self):
+        self.video.release()
+
+    def get_frame(self):
+        ret,image = self.video.read()
+        ret,jpeg = cv2.imencode('.jpg',image)
+        return jpeg.tobytes()
+
+def gen(camera):
+    while True:
+        frame = camera.get_frame()
+        yield(b'--frame\r\n'
+        b'Content-Type: image/jpeg\r\n\r\n' + frame + b'\r\n\r\n')
+
+def index(request): 
+    try:
+        return StreamingHttpResponse(gen(VideoCamera()),content_type="multipart/x-mixed-replace;boundary=frame")
+    except HttpResponseServerError as e:
+        print("aborted")
+
+
 
 def most_common(L):
   # get an iterable of (item, iterable) pairs
@@ -114,7 +152,16 @@ def reset(request):
 	List.objects.all().delete()
 	History.objects.all().delete()
 
+"""
+Faces 
+@desc does things 
+@param unknown_image 
+"""
+class Faces:
+	def __init__(self, imagePath ):
+		self.unknown_image = face_recognition.load
 
+	#def destoryFaces 
 
 
 def posts_create(request):
@@ -129,11 +176,68 @@ def posts_create(request):
 		#print(str(instance.timestamp).replace(" ", "_")[:25] + ".jpg")
 		image_name = str(instance.timestamp).replace(" ", "_")[:25].replace(":","") + ".jpg"
 
+		#image_path = os.path.join("/home/newgennick/home/newgennick/media_cdn", image_name)
 		image_path = os.path.join("C:/Users/LJC/media_cdn/", image_name)
+
+
+
+
+		#IF WE ARE TRYING TO USE THE WEBCAM FOOTAGE
+
+		list_of_files = glob.glob(MEDIA_ROOT + '/*') # * means all if need specific format then *.csv
+		latest_file = max(list_of_files, key=os.path.getctime)
+		image_path = latest_file
+
+		
+
+
 		unknown_image = face_recognition.load_image_file(image_path)
+
+		instance.image = os.path.basename(image_path)
+
+
+		###########################################################
+
+		print(instance.image)
+		print("hello")
+
+		#instance.image = image_path
+
+
+		#IF USING IPAD
+
+		print(instance.Reset)
+
+		if instance.Reset == 1 or instance.Reset == '1' :
+			List.objects.all().delete()
+			History.objects.all().delete()
+
+
+
+
+
+
+
+
+
+
+
 		unknown_face_encoding = face_recognition.face_encodings(unknown_image)
 		unknown_face_encoding_lists = []
 		# faces = Faces(image_name)
+
+		if len(unknown_face_encoding) == 0:
+			unknown_image = ndimage.rotate(unknown_image,-90)
+			unknown_face_encoding = face_recognition.face_encodings(unknown_image)
+
+		if len(unknown_face_encoding) == 0:
+			unknown_image = ndimage.rotate(unknown_image,180)
+			unknown_face_encoding = face_recognition.face_encodings(unknown_image)
+
+
+
+
+
 
 		print1 = "Number of persons detected : {} \n".format(len(unknown_face_encoding))
 		print(print1)
@@ -444,8 +548,8 @@ def posts_create(request):
 		print(History.objects.filter(person_number = instance.identified_person).order_by('-id')[:5])
 
 
-		if instance.identified_person != '':
-			for entry in History.objects.filter(person_number = instance.identified_person).order_by('-id')[:5]:
+		if instance.identified_person != '' and History.objects.filter(person_number = instance.identified_person).exclude(Location = "StarBucks").count() > 0:
+			for entry in History.objects.filter(person_number = instance.identified_person).exclude(Location = "StarBucks").order_by('-id'):
 				last_4_locations.append(entry.Location)
 				datetime_list.append(entry.Date)
 				print(entry.Location)
@@ -461,13 +565,20 @@ def posts_create(request):
 
 		
 
-			most_recent_date = datetime_list[0]
+			most_recent_date = instance.Date
 			print(datetime_list)
-			datetime_list = datetime_list[1:]
+			
 			print(datetime_list)
 			difference = most_recent_date - max(datetime_list)
 			print(difference.days)
 			print(last_4_locations)
+
+
+			#history_without_starbucks = (value for value in last_4_locations if last_4_locations != "StarBucks")
+			#history_without_starbucks = list(history_without_starbucks)
+			#print(history_without_starbucks)
+			#print(len(history_without_starbucks))
+			#print(len(set(history_without_starbucks)))
 
 
 
@@ -475,7 +586,8 @@ def posts_create(request):
 
 
 
-			if History.objects.filter(person_number = instance.identified_person).order_by('-id')[:5].count() == 5 and len(set(last_4_locations)) != 5 and last_4_locations.count('StarBucks') == 1 and last_4_locations[0] == "StarBucks" and difference.days > 30:
+			if History.objects.filter(person_number = instance.identified_person).exclude(Location = "StarBucks").order_by('-id').count() > 2 and len(set(last_4_locations)) != len(last_4_locations) and instance.Location == "StarBucks" and difference.days > -1:
+				print('entered')
 				if most_common(last_4_locations) == 'Hugo Boss':
 
 					context = {
@@ -523,8 +635,8 @@ def posts_create(request):
 
 
 		return HttpResponseRedirect(instance.get_absolute_url())
-	else:
-		messages.error(request, "Not Successfully Created")
+	#else:
+		#messages.error(request, "Not Successfully Created")
 	#if request.method == "POST":
 	#	print(request.POST.get("content"))
 	#	print(request.POST.get("title"))
